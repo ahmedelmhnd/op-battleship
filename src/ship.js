@@ -29,7 +29,9 @@ class Ship {
     return this._sunk;
   }
 
-
+  hit() {
+    this.hits++;
+  }
 }
 
 export default Ship;
