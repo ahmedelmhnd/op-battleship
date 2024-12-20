@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+}
+
+.container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.board-1, .board-2{
+  width: fit-content;
+  display: grid;
+  grid-template: repeat(10, 50px) / repeat(10, 50px);
+  border:
+    1px,
+    solid black;
+}
+
+.cell {
+  border:
+    1px,
+    solid black;
+}
+
+.clicked {
+    background-color: rgb(255, 210, 210);
+}
+
+.found {
+    background-color: rgb(197, 255, 197);
+}
+
+.header{
+    font-size: 40px;
+}

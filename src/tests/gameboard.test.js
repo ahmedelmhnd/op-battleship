@@ -30,7 +30,7 @@ test("adding a ship", () => {
   }
 });
 
-test("reaceiving attack", () => {
+test("receaiving attack", () => {
   gameboard.initBoard(10);
   const ship = new Ship(2);
   gameboard.addShip(6, 3, ship);
@@ -42,4 +42,27 @@ test("reaceiving attack", () => {
   });
   expect(ship.hits).toBe(1);
   expect(gameboard.ships[0].ship.hits).toBe(1);
+});
+
+test("checking if all ships are sunk", () => {
+  gameboard.initBoard(10);
+  const ship1 = new Ship(2);
+  const ship2 = new Ship(1);
+  gameboard.addShip(6, 3, ship1);
+  gameboard.addShip(1, 1, ship2);
+  ship1.hit();
+  ship1.hit();
+  ship2.hit();
+  expect(gameboard.allSunk()).toBe(true);
+});
+
+test("checking if all ships are not sunk", () => {
+  gameboard.initBoard(10);
+  const ship1 = new Ship(2);
+  const ship2 = new Ship(1);
+  gameboard.addShip(6, 3, ship1);
+  gameboard.addShip(1, 1, ship2);
+  ship1.hit();
+  ship2.hit();
+  expect(gameboard.allSunk()).toBe(true);
 });

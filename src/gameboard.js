@@ -5,6 +5,7 @@ class Gameboard {
     this.size = size;
     this.board = [];
     this.ships = [];
+    this.initBoard();
   }
 
   set size(value) {
@@ -24,21 +25,31 @@ class Gameboard {
     }
   }
 
-  addShip(xCoord, yCoord, ship) {
-    this.ships.push({ ship, xCoord, yCoord });
+  addShip(row, col, ship) {
+    this.ships.push({ ship, row, col });
 
     for (let i = 0; i < ship.length; i++) {
-      this.board[xCoord + i][yCoord].isShip = true;
-      this.board[xCoord + i][yCoord].ship = ship;
+      this.board[row][col + i].isShip = true;
+      this.board[row][col + i].ship = ship;
     }
   }
 
-  receiveAttack(xCoord, yCoord) {
-    this.board[xCoord][yCoord].clicked = true;
+  receiveAttack(row, col) {
+    this.board[row][col].clicked = true;
 
-    if (this.board[xCoord][yCoord].isShip === true) {
-      this.board[xCoord][yCoord].ship.hit();
+    if (this.board[row][col].isShip === true) {
+      this.board[row][col].ship.hit();
     }
+  }
+
+  allSunk() {
+    let sunk = true;
+    this.ships.forEach((e) => {
+      if (!e.ship.isSunk()) {
+        sunk = false;
+      }
+    });
+    return sunk;
   }
 }
 

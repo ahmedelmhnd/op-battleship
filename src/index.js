@@ -1,5 +1,8 @@
-const cat = "cat";
+import "./styles.css";
 
-for (let index = 0; index < 10; index++) {
-  console.log(cat);
-}
+import { computerMove, displayBoard, initGame } from "./dom";
+import Player from "./player";
+import Ship from "./ship";
+
+initGame(10);
+
