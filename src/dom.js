@@ -7,8 +7,6 @@ function initGame(size) {
   pickShips(computer);
   randomShips(player);
 
-
-
   displayBoard(player, computer);
   displayBoard(computer);
 }
@@ -50,12 +48,14 @@ function setupCell(player, i, j) {
 }
 
 function cellClickListener(cell, player, computer) {
-  cell.addEventListener("click", () => {
-    player.gameboard.receiveAttack(cell.id[1], cell.id[2]);
-    checkWin(player);
-    displayBoard(player, computer);
-    computerMove(computer);
-  });
+  if (!player.gameboard.board[cell.id[1]][cell.id[2]].clicked) {
+    cell.addEventListener("click", () => {
+      player.gameboard.receiveAttack(cell.id[1], cell.id[2]);
+      checkWin(player);
+      displayBoard(player, computer);
+      computerMove(computer);
+    });
+  }
 }
 
 function checkWin(player) {
@@ -68,9 +68,13 @@ function computerMove(player) {
   let row = Math.floor(Math.random() * 10);
   let col = Math.floor(Math.random() * 10);
 
-  player.gameboard.receiveAttack(row, col);
-  displayBoard(player, player.container);
-  checkWin(player);
+  if (player.gameboard.board[row][col].clicked) {
+    computerMove(player);
+  } else {
+    player.gameboard.receiveAttack(row, col);
+    displayBoard(player, player.container);
+    checkWin(player);
+  }
 }
 
 function pickShips(computer) {
