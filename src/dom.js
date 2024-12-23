@@ -5,11 +5,9 @@ function initGame(size) {
   const player = new Player(size, "Human", ".board-2");
   const computer = new Player(size, "Computer", ".board-1");
   pickShips(computer);
+  randomShips(player);
 
-  const ship1 = new Ship(4);
-  const ship2 = new Ship(4);
-  player.gameboard.addShip(2, 3, ship1);
-  computer.gameboard.addShip(2, 3, ship2);
+
 
   displayBoard(player, computer);
   displayBoard(computer);
@@ -86,7 +84,6 @@ function pickDialog(computer, shipIndex) {
   board.innerHTML = "";
   pickMessage(shipIndex);
   confirmButton(shipIndex, computer);
-
 
   computer.gameboard.board.forEach((row, i) => {
     row.forEach((col, j) => {
@@ -254,6 +251,30 @@ function directionButton() {
       button.textContent = "Horizontal";
     }
   });
+}
+
+function randomShips(player) {
+  let index = 0;
+  while (index < 5) {
+    let row = Math.floor(Math.random() * 10);
+    let col = Math.floor(Math.random() * 10);
+    let dir = Math.floor(Math.random() * 2);
+    let direction;
+    if (dir === 0) {
+      direction = "Horizontal";
+    } else {
+      direction = "Vertical";
+    }
+
+    const ship = new Ship(shipLength(index), direction);
+
+    if (checkInBounds(row, col, ship.length, player, direction)) {
+      if (checkNoShips(row, col, ship.length, player, direction)) {
+        player.gameboard.addShip(row, col, ship);
+        index++;
+      }
+    }
+  }
 }
 
 export { initGame };
