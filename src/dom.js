@@ -37,12 +37,17 @@ function setupCell(player, i, j) {
   cellDiv.id = "1" + i + j;
   cellDiv.classList = "cell";
 
+  if (player.gameboard.board[i][j].isShip === true) {
+    cellDiv.classList = "cell ship";
+  }
+
   if (player.gameboard.board[i][j].clicked === true) {
     cellDiv.classList = "cell clicked";
     if (player.gameboard.board[i][j].isShip === true) {
       cellDiv.classList = "cell clicked found";
     }
   }
+
   return cellDiv;
 }
 
@@ -79,6 +84,7 @@ function pickDialog(computer, shipIndex) {
   const board = document.querySelector(".board-0");
   board.innerHTML = "";
   pickMessage(shipIndex);
+  confirmButton(shipIndex);
 
   computer.gameboard.board.forEach((row, i) => {
     row.forEach((col, j) => {
@@ -99,13 +105,32 @@ function pickDialog(computer, shipIndex) {
 function addShipsListener(computer, cellDiv, index) {
   cellDiv.addEventListener("click", () => {
     const ship = new Ship(shipLength(index));
-    computer.gameboard.addShip(
-      Number(cellDiv.id[1]),
-      Number(cellDiv.id[2]),
-      ship,
-    );
-    index++;
-    pickDialog(computer, index);
+
+    if (
+      checkInBounds(
+        Number(cellDiv.id[1]),
+        Number(cellDiv.id[2]),
+        ship.length,
+        computer,
+      )
+    ) {
+      if (
+        checkNoShips(
+          Number(cellDiv.id[1]),
+          Number(cellDiv.id[2]),
+          ship.length,
+          computer,
+        )
+      ) {
+        computer.gameboard.addShip(
+          Number(cellDiv.id[1]),
+          Number(cellDiv.id[2]),
+          ship,
+        );
+        index++;
+        pickDialog(computer, index);
+      }
+    }
   });
 }
 
@@ -157,4 +182,41 @@ function shipLength(index) {
   }
   return length;
 }
+
+function confirmButton(index) {
+  const dialog = document.querySelector("dialog");
+  const button = document.querySelector(".submit");
+
+  if (index > 4) {
+    button.removeEventListener("click", displayError);
+    button.addEventListener("click", () => {
+      dialog.close();
+    });
+  } else {
+    button.removeEventListener("click", displayError);
+    button.addEventListener("click", displayError);
+  }
+}
+
+function displayError() {
+  const errorMessage = document.querySelector(".dialog-error");
+  errorMessage.textContent = "Please select your ship positions";
+}
+
+function checkNoShips(row, col, length, player) {
+  for (let i = 0; i < length; i++) {
+    if (player.gameboard.board[row][col + i].isShip) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function checkInBounds(row, col, length, player) {
+  if (col + length > player.gameboard.size) {
+    return false;
+  }
+  return true;
+}
+
 export { initGame };
