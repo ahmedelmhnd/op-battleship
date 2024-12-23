@@ -77,6 +77,7 @@ function computerMove(player) {
 
 function pickShips(computer) {
   pickDialog(computer, 0);
+  directionButton();
 }
 
 function pickDialog(computer, shipIndex) {
@@ -84,7 +85,8 @@ function pickDialog(computer, shipIndex) {
   const board = document.querySelector(".board-0");
   board.innerHTML = "";
   pickMessage(shipIndex);
-  confirmButton(shipIndex);
+  confirmButton(shipIndex, computer);
+
 
   computer.gameboard.board.forEach((row, i) => {
     row.forEach((col, j) => {
@@ -104,7 +106,8 @@ function pickDialog(computer, shipIndex) {
 
 function addShipsListener(computer, cellDiv, index) {
   cellDiv.addEventListener("click", () => {
-    const ship = new Ship(shipLength(index));
+    const direction = document.querySelector(".ship-direction").textContent;
+    const ship = new Ship(shipLength(index), direction);
 
     if (
       checkInBounds(
@@ -112,6 +115,7 @@ function addShipsListener(computer, cellDiv, index) {
         Number(cellDiv.id[2]),
         ship.length,
         computer,
+        ship.direction,
       )
     ) {
       if (
@@ -120,6 +124,7 @@ function addShipsListener(computer, cellDiv, index) {
           Number(cellDiv.id[2]),
           ship.length,
           computer,
+          ship.direction,
         )
       ) {
         computer.gameboard.addShip(
@@ -153,6 +158,9 @@ function pickMessage(index) {
       message.textContent = "Pick your Carrier Destroyer (2 spaces)";
       break;
 
+    case 5:
+      message.textContent = "You can Submit now! :)";
+      break;
     default:
       break;
   }
@@ -183,7 +191,7 @@ function shipLength(index) {
   return length;
 }
 
-function confirmButton(index) {
+function confirmButton(index, computer) {
   const dialog = document.querySelector("dialog");
   const button = document.querySelector(".submit");
 
@@ -191,6 +199,7 @@ function confirmButton(index) {
     button.removeEventListener("click", displayError);
     button.addEventListener("click", () => {
       dialog.close();
+      displayBoard(computer);
     });
   } else {
     button.removeEventListener("click", displayError);
@@ -203,20 +212,48 @@ function displayError() {
   errorMessage.textContent = "Please select your ship positions";
 }
 
-function checkNoShips(row, col, length, player) {
-  for (let i = 0; i < length; i++) {
-    if (player.gameboard.board[row][col + i].isShip) {
-      return false;
+function checkNoShips(row, col, length, player, direction) {
+  if (direction == "Vertical") {
+    for (let i = 0; i < length; i++) {
+      if (player.gameboard.board[row + i][col].isShip) {
+        return false;
+      }
+    }
+  } else {
+    for (let i = 0; i < length; i++) {
+      if (player.gameboard.board[row][col + i].isShip) {
+        return false;
+      }
     }
   }
+
   return true;
 }
 
-function checkInBounds(row, col, length, player) {
-  if (col + length > player.gameboard.size) {
-    return false;
+function checkInBounds(row, col, length, player, direction) {
+  if (direction == "Vertical") {
+    if (row + length > player.gameboard.size) {
+      return false;
+    }
+  } else {
+    if (col + length > player.gameboard.size) {
+      return false;
+    }
   }
+
   return true;
+}
+
+function directionButton() {
+  const button = document.querySelector(".ship-direction");
+
+  button.addEventListener("click", () => {
+    if (button.textContent == "Horizontal") {
+      button.textContent = "Vertical";
+    } else {
+      button.textContent = "Horizontal";
+    }
+  });
 }
 
 export { initGame };

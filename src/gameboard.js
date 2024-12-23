@@ -28,9 +28,16 @@ class Gameboard {
   addShip(row, col, ship) {
     this.ships.push({ ship, row, col });
 
-    for (let i = 0; i < ship.length; i++) {
-      this.board[row][col + i].isShip = true;
-      this.board[row][col + i].ship = ship;
+    if ((ship.direction == "Vertical")) {
+      for (let i = 0; i < ship.length; i++) {
+        this.board[row + i][col].isShip = true;
+        this.board[row + i][col].ship = ship;
+      }
+    } else {
+      for (let i = 0; i < ship.length; i++) {
+        this.board[row][col + i].isShip = true;
+        this.board[row][col + i].ship = ship;
+      }
     }
   }
 

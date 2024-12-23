@@ -1,8 +1,9 @@
 class Ship {
-  constructor(length) {
+  constructor(length, direction) {
     this.length = length;
     this.hits = 0;
     this.sunk = false;
+    this.direction = direction;
   }
 
   set length(value) {
