@@ -2,8 +2,9 @@ import Player from "./player";
 import Ship from "./ship";
 
 function initGame(size) {
-  const player = new Player(size, "Human", ".board-1");
-  const computer = new Player(size, "Computer", ".board-2");
+  const player = new Player(size, "Human", ".board-2");
+  const computer = new Player(size, "Computer", ".board-1");
+  pickShips(computer);
 
   const ship1 = new Ship(4);
   const ship2 = new Ship(4);
@@ -28,10 +29,6 @@ function displayBoard(player, computer) {
       container.appendChild(cellDiv);
     });
   });
-
-  if (player.type === "Human") {
-    computerMove(computer);
-  }
 }
 
 function setupCell(player, i, j) {
@@ -54,6 +51,7 @@ function cellClickListener(cell, player, computer) {
     player.gameboard.receiveAttack(cell.id[1], cell.id[2]);
     checkWin(player);
     displayBoard(player, computer);
+    computerMove(computer);
   });
 }
 
@@ -72,4 +70,91 @@ function computerMove(player) {
   checkWin(player);
 }
 
+function pickShips(computer) {
+  pickDialog(computer, 0);
+}
+
+function pickDialog(computer, shipIndex) {
+  const dialog = document.querySelector("dialog");
+  const board = document.querySelector(".board-0");
+  board.innerHTML = "";
+  pickMessage(shipIndex);
+
+  computer.gameboard.board.forEach((row, i) => {
+    row.forEach((col, j) => {
+      const cellDiv = setupCell(computer, i, j);
+      addShipsListener(computer, cellDiv, shipIndex);
+
+      if (computer.gameboard.board[i][j].isShip) {
+        cellDiv.classList = "cell ship";
+      }
+
+      board.appendChild(cellDiv);
+    });
+  });
+
+  dialog.showModal();
+}
+
+function addShipsListener(computer, cellDiv, index) {
+  cellDiv.addEventListener("click", () => {
+    const ship = new Ship(shipLength(index));
+    computer.gameboard.addShip(
+      Number(cellDiv.id[1]),
+      Number(cellDiv.id[2]),
+      ship,
+    );
+    index++;
+    pickDialog(computer, index);
+  });
+}
+
+function pickMessage(index) {
+  const message = document.querySelector(".pick-message");
+  switch (index) {
+    case 0:
+      message.textContent = "Pick your Carrier (occupies 5 spaces)";
+      break;
+    case 1:
+      message.textContent = "Pick your Battleship (4 spaces)";
+      break;
+    case 2:
+      message.textContent = "Pick your Cruiser (3 spaces)";
+      break;
+    case 3:
+      message.textContent = "Pick your Submarine (3 spaces)";
+      break;
+    case 4:
+      message.textContent = "Pick your Carrier Destroyer (2 spaces)";
+      break;
+
+    default:
+      break;
+  }
+}
+
+function shipLength(index) {
+  let length;
+  switch (index) {
+    case 0:
+      length = 5;
+      break;
+    case 1:
+      length = 4;
+      break;
+    case 2:
+      length = 3;
+      break;
+    case 3:
+      length = 3;
+      break;
+    case 4:
+      length = 2;
+      break;
+
+    default:
+      break;
+  }
+  return length;
+}
 export { initGame };
