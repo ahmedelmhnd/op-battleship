@@ -1,40 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Metal+Mania&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 body {
   margin: 0;
 }
 
-.container{
-    display: flex;
-    justify-content: space-around;
+.container {
+  display: flex;
+  justify-content: space-around;
 }
 
-.board-1, .board-2, .board-0{
-  width: fit-content;
+.board-1,
+.board-2,
+.board-0 {
   display: grid;
-  grid-template: repeat(10, 50px) / repeat(10, 50px);
-  border:
-    1px,
-    solid black;
+  grid-template: repeat(10, 40px) / repeat(10, 40px);
+  gap: 2px;
 }
 
 .cell {
-  border:
-    1px,
-    solid black;
+  background-color: rgb(255, 255, 255);
+  border-radius: 13px;
+  box-shadow: 5px 5px 1px rgba(0, 0, 0, 0.3);
+  border: solid 1px rgb(0, 0, 0, 0.4);
+}
+
+.board-0 .cell:hover,
+.board-2 .cell:hover {
+  transform: scale(1.2);
 }
 
 .clicked {
-    background-color: rgb(255, 210, 210);
+  background-color: rgb(255, 210, 210);
 }
 
 .found {
-    background-color: rgb(197, 255, 197);
+  background-color: rgb(197, 255, 197);
 }
 
-.header{
-    font-size: 40px;
+.header {
+  font-size: 40px;
 }
 
-.ship{
-    background-color: aqua;
+.board-0 .ship,
+.board-1 .ship {
+  background-color: aqua;
 }
 
+body {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 3fr 10fr 0.5fr;
+}
+
+.ship-image {
+  height: 100px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  align-items: center;
+
+  font-family: "Metal Mania", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 70px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(31, 32, 38);
+  font-family: "Roboto", serif;
+  font-weight: 700;
+  color: white;
+  gap: 5px;
+}
+
+.github-logo {
+  height: 20px;
+}
+
+dialog {
+  border: none;
+  border-radius: 20px;
+}
+
+.shaded {
+  opacity: 0.3;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: "Roboto", serif;
+  font-weight: 600;
+}
+
+.top-dialog {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bot-dialog {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+    border: none;
+  background-color: rgb(207, 207, 207);
+  border-radius: 10px;
+  font-family: "Roboto", serif;
+  font-weight: 300;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.dialog-error {
+  color: rgb(135, 0, 0);
+}

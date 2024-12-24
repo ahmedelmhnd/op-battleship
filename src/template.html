@@ -8,16 +8,28 @@
   </head>
   <body>
     <dialog>
-        <div class="pick-message"></div>
-        <button class="ship-direction">Horizontal</button>
+      <div class="dialog-container">
+        <div class="top-dialog">
+          <div class="pick-message"></div>
+          <button class="ship-direction">Horizontal</button>
+        </div>
+
         <div class="board-0"></div>
-        <button class="submit">Confirm</button>
-        <div class="dialog-error"></div>
+        <div class="bot-dialog">
+          <button class="submit">Confirm</button>
+          <div class="dialog-error"></div>
+        </div>
+      </div>
     </dialog>
-    <div class="header">Battleship!</div>
+    <div class="header">
+      <img src="./images/title-ship.png" class="ship-image" />Battleship
+    </div>
     <div class="container">
-        <div class="board-1"></div>
-        <div class="board-2"></div>
+      <div class="board-1"></div>
+      <div class="board-2"></div>
+    </div>
+    <div class="footer">
+      <img class="github-logo" src="images/github-logo.png" />@ahmedelmhnd
     </div>
   </body>
 </html>

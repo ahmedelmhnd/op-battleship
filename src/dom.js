@@ -83,6 +83,7 @@ function pickShips(computer) {
 }
 
 function pickDialog(computer, shipIndex) {
+  const body = document.querySelector("body");
   const dialog = document.querySelector("dialog");
   const board = document.querySelector(".board-0");
   board.innerHTML = "";
@@ -101,7 +102,7 @@ function pickDialog(computer, shipIndex) {
       board.appendChild(cellDiv);
     });
   });
-
+  body.classList = "shaded";
   dialog.showModal();
 }
 
@@ -195,10 +196,12 @@ function shipLength(index) {
 function confirmButton(index, computer) {
   const dialog = document.querySelector("dialog");
   const button = document.querySelector(".submit");
+  const body = document.querySelector("body");
 
   if (index > 4) {
     button.removeEventListener("click", displayError);
     button.addEventListener("click", () => {
+      body.classList = "";
       dialog.close();
       displayBoard(computer);
     });
